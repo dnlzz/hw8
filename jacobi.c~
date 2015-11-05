@@ -21,7 +21,7 @@ void print_vector();
 void print_equation();
 
 float a[N][N], b[N];
-float x[N], buf[N], tmp[N];
+float x[N], buf[N];
 int n;
 float error;
 
@@ -33,8 +33,6 @@ int main(int argc, char **argv){
   init();		   /* initalize a, x0 and b - DO not change */
   n_iter = jacobi();
 
-  printf("Num iter: %d", n_iter);
-
   return 0;
 }
 
@@ -44,45 +42,16 @@ int jacobi(){
   // ...
   // ...
   // ...
-
-  while (!(convergence(x) > error)) {  //while   ax-b != 0
-    sum = 0;
-    for (i=0;i<n;i++) {
-      for (j=0;j<n;j++) {
-	if (i != j)
-	  sum+=a[i][j] * x[j];
-	buf[i] = (b[i] - sum) / a[i][i];   //give us our x values 
-      }
-    }
-
-    for (i=0; i<n; i++)   //stores new x values into x[N]
-      x[i] = buf[i];
-    
-  }
-  
   return k;
 }
 
 // returns 1 if converged else 0
 int convergence(int iter){
-  int i,j,k,flag=1, sum=0;
+  int i,j,k,flag=1;
   // ...
   // ...
   // ...
 
-  for (i=0; i<n; i++) {
-    for (j=0; j<n; j++)
-      sum+=a[i][j] * x[j];
-
-    tmp[i]=sum;
-  }
-
-  for (k=0; k<n; k++)
-    sum+=tmp[k];
-
-  if (!(sum-error < 0))
-    flag=0;
-  
   return flag;
 }
 
@@ -91,7 +60,7 @@ void init(char **argv){
   int i,j,k,flag=0;
   float sum;
   int seed = time(0) % 100;	/* seconds since 1/1/1970 */
-  seed = 555;
+
   srand(seed);
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
