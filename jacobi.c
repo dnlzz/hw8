@@ -44,49 +44,53 @@ int jacobi(){
   // ...
   // ...
   // ...
-
-  //while (!(convergence(x) > error)) {  //while   ax-b != 0
+  // for (k=0; k < 50; k++) {
+  while (!(convergence(x))) {  //while   ax-b != 0
     sum = 0;
     for (i=0;i<n;i++) {
       for (j=0;j<n;j++) {
         if (i != j)
           sum += a[i][j] * x[j];
-        printf("%f", sum);
+	// printf("Sum:  %f  b[%d]:  %f a[%d][%d]:  %f\n", sum, i, b[i], i, i, a[i][i]);
+	
       }
-
-      buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values 
+      
     }
 
-    for (i=0; i<n; i++) {  //stores new x values into x[N]
+    for (i=0; i<n; i++) {
+      buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values
       x[i] = buf[i];
-      printf("x[%d] : %f\n", i, buf[i]);
+      printf("x[%d]: %f\n", i, x[i]);
     }
-
-
-  //}
+       
+  }
   
   return k;
 }
 
 // returns 1 if converged else 0
 int convergence(int iter){
-  int i,j,k,flag=1, sum=0;
+  int i,j,k,flag=1;
+  float sum=0;
   // ...
   // ...
   // ...
 
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++)
-      sum+=a[i][j] * x[j];
+      sum+=(a[i][j] * x[j]) - b[i];
 
     tmp[i]=sum;
   }
 
-  for (k=0; k<n; k++)
-    sum+=tmp[k];
-
-  if (!(sum-error < 0))
-    flag=0;
+  for (k=0; k<n; k++) {
+    if ( (tmp[k]-error) > error ) {
+      flag=0;
+      printf("%f\n", tmp[k]);
+    } else {
+      printf("%f\n", tmp[k]);
+    }
+  }
   
   return flag;
 }
@@ -96,7 +100,7 @@ void init(char **argv){
   int i,j,k,flag=0;
   float sum;
   int seed = time(0) % 100;	/* seconds since 1/1/1970 */
-  seed=47;
+  
   srand(seed);
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
