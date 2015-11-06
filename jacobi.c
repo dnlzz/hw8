@@ -45,20 +45,25 @@ int jacobi(){
   // ...
   // ...
 
-  while (!(convergence(x) > error)) {  //while   ax-b != 0
+  //while (!(convergence(x) > error)) {  //while   ax-b != 0
     sum = 0;
     for (i=0;i<n;i++) {
       for (j=0;j<n;j++) {
-	if (i != j)
-	  sum+=a[i][j] * x[j];
-	buf[i] = (b[i] - sum) / a[i][i];   //give us our x values 
+        if (i != j)
+          sum += a[i][j] * x[j];
+        printf("%f", sum);
       }
+
+      buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values 
     }
 
-    for (i=0; i<n; i++)   //stores new x values into x[N]
+    for (i=0; i<n; i++) {  //stores new x values into x[N]
       x[i] = buf[i];
-    
-  }
+      printf("x[%d] : %f\n", i, buf[i]);
+    }
+
+
+  //}
   
   return k;
 }
@@ -91,7 +96,7 @@ void init(char **argv){
   int i,j,k,flag=0;
   float sum;
   int seed = time(0) % 100;	/* seconds since 1/1/1970 */
-  seed = 555;
+  seed=47;
   srand(seed);
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
