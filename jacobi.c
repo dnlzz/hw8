@@ -72,30 +72,29 @@ int jacobi(){
 
 // returns 1 if converged else 0
 int convergence(int iter){
-  int i,j,k,flag=1;
-  float sum=0, bsum=0;
+  int i,j,k=0,flag=1;
+  float sum=0;
   // ...
   // ...
   // ...
 
   for (i=0; i<n; i++) {
-    for (j=0; j<n; j++)
-      sum+=(a[i][j] * x[j]);
+    for (j=0; j<n; j++) {
+	sum+=(a[i][j] * x[k]);
+	k++;
+    }
 
+    printf("Sum: %f\n", sum);
     tmp[i]=sum;
     sum=0;
+    k=0;
   }
   
   for (k=0; k<n; k++) {
-    sum+=tmp[k];
-    bsum+=b[k];
+    if ( (tmp[k] - b[k]) > error )
+      return 0;
   }
 
-  printf("Sum: %f\nBsum: %f\nS-B: %f\n", sum, bsum, sum-bsum);
-
-  if ( (sum - error) > bsum)
-    return 0;
-  
   //if ( (tmp[k] - error) > b[k] )
   //return 0;
  
