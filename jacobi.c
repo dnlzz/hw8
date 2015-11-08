@@ -62,7 +62,9 @@ int jacobi(){
       x[i] = buf[i];
       printf("x[%d]: %f\n", i, x[i]);
     }
-       
+
+    k++;
+    
   }
   
   return k;
@@ -71,27 +73,32 @@ int jacobi(){
 // returns 1 if converged else 0
 int convergence(int iter){
   int i,j,k,flag=1;
-  float sum=0;
+  float sum=0, bsum=0;
   // ...
   // ...
   // ...
 
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++)
-      sum+=(a[i][j] * x[j]) - b[i];
+      sum+=(a[i][j] * x[j]);
 
     tmp[i]=sum;
-  }
-
-  for (k=0; k<n; k++) {
-    if ( (tmp[k]-error) > error ) {
-      flag=0;
-      printf("%f\n", tmp[k]);
-    } else {
-      printf("%f\n", tmp[k]);
-    }
+    sum=0;
   }
   
+  for (k=0; k<n; k++) {
+    sum+=tmp[k];
+    bsum+=b[k];
+  }
+
+  printf("Sum: %f\nBsum: %f\nS-B: %f\n", sum, bsum, sum-bsum);
+
+  if ( (sum - error) > bsum)
+    return 0;
+  
+  //if ( (tmp[k] - error) > b[k] )
+  //return 0;
+ 
   return flag;
 }
 
