@@ -31,7 +31,7 @@ int main(int argc, char **argv){
   error = atof(argv[2]);
 
   init();		   /* initalize a, x0 and b - DO not change */
-
+/*
   a[0][0] = 5;
   a[0][1] = -2;
   a[0][2] = 3;
@@ -51,10 +51,13 @@ int main(int argc, char **argv){
   x[2] = 0;
 
   print_equation();
-
+*/
   n_iter = jacobi();
 
   printf("Num iter: %d\n", n_iter);
+
+  for (int z=0; z<n; z++)
+    printf("x[%d]:  %f\n", z, x[z]);
 
   return 0;
 }
@@ -80,7 +83,7 @@ int jacobi(){
     for (i=0; i<n; i++) {
       
       x[i] = buf[i];
-      printf("x[%d]: %f\n", i, x[i]);
+      //printf("x[%d]: %f\n", i, x[i]);
     }
 
     k++;
@@ -112,9 +115,9 @@ int convergence(){
   }
   
   for (k=0; k<n; k++) {
-    printf("tmp[%d]: %f   b[%d]: %f\n", k, tmp[k], k, b[k]);
+    //printf("tmp[%d]: %f   b[%d]: %f\n", k, tmp[k], k, b[k]);
     if ( fabs(tmp[k] - b[k]) > error ) {
-      printf("Error: %f\n", fabs(tmp[k]-b[k]));
+      //printf("Error: %f\n", fabs(tmp[k]-b[k]));
       return 0;
     }
   }
@@ -131,7 +134,7 @@ void init(char **argv){
   int i,j,k,flag=0;
   float sum;
   int seed = time(0) % 100;	/* seconds since 1/1/1970 */
-  seed = 31;
+
   srand(seed);
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
