@@ -31,6 +31,27 @@ int main(int argc, char **argv){
   error = atof(argv[2]);
 
   init();		   /* initalize a, x0 and b - DO not change */
+
+  a[0][0] = 5;
+  a[0][1] = -2;
+  a[0][2] = 3;
+    a[1][0] = -3;
+  a[1][1] = 9;
+  a[1][2] = 1;
+    a[2][0] = 2;
+  a[2][1] = -1;
+  a[2][2] = -7;
+
+  b[0] = -1;
+  b[1] = 2;
+  b[2] = 3;
+
+  x[0] = 0;
+  x[1] = 0;
+  x[2] = 0;
+
+  print_equation();
+
   n_iter = jacobi();
 
   printf("Num iter: %d\n", n_iter);
@@ -39,28 +60,27 @@ int main(int argc, char **argv){
 }
 
 int jacobi(){
-  int i,j,k;
-  float sum;
+  int i,j,k=0;
+  float sum=0;
   // ...
   // ...
   // ...
-  // for (k=0; k < 50; k++) {
+  //for (k=0; k < 15; k++) {
   while (!(convergence())) {  //while   ax-b != 0
-    sum = 0;
     for (i=0;i<n;i++) {
       for (j=0;j<n;j++) {
         if (i != j)
           sum += a[i][j] * x[j];
-	// printf("Sum:  %f  b[%d]:  %f a[%d][%d]:  %f\n", sum, i, b[i], i, i, a[i][i]);
-	
       }
-      
+      buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values
+      //printf("Sum:  %f  b[%d]:  %f a[%d][%d]:  %f  buf[%d]:  %f\n", sum, i, b[i], i, i, a[i][i], i, buf[i]);
+      sum=0;
     }
 
     for (i=0; i<n; i++) {
-      buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values
+      
       x[i] = buf[i];
-      //printf("x[%d]: %f\n", i, x[i]);
+      printf("x[%d]: %f\n", i, x[i]);
     }
 
     k++;
@@ -80,24 +100,26 @@ int convergence(){
 
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) {
-	sum+=(a[i][j] * x[k]);
-	k++;
+	    sum+=(a[i][j] * x[k]);
+	    k++;
     }
 
     //printf("Sum: %f\n", sum);
     tmp[i]=sum;
+    //printf("Tmp[%d]:  %f\n", i, sum);
     sum=0;
     k=0;
   }
   
   for (k=0; k<n; k++) {
     printf("tmp[%d]: %f   b[%d]: %f\n", k, tmp[k], k, b[k]);
-    if ( (tmp[k] - b[k]) >= error ) {
-      printf("Error: %f\n", tmp[k]-b[k]);
+    if ( fabs(tmp[k] - b[k]) > error ) {
+      printf("Error: %f\n", fabs(tmp[k]-b[k]));
       return 0;
     }
   }
 
+  printf("\n");
   //if ( (tmp[k] - error) > b[k] )
   //return 0;
  
@@ -109,7 +131,7 @@ void init(char **argv){
   int i,j,k,flag=0;
   float sum;
   int seed = time(0) % 100;	/* seconds since 1/1/1970 */
-  
+  seed = 31;
   srand(seed);
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
