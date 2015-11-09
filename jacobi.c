@@ -33,7 +33,7 @@ int main(int argc, char **argv){
   init();		   /* initalize a, x0 and b - DO not change */
   n_iter = jacobi();
 
-  printf("Num iter: %d", n_iter);
+  printf("Num iter: %d\n", n_iter);
 
   return 0;
 }
@@ -45,7 +45,7 @@ int jacobi(){
   // ...
   // ...
   // for (k=0; k < 50; k++) {
-  while (!(convergence(x))) {  //while   ax-b != 0
+  while (!(convergence())) {  //while   ax-b != 0
     sum = 0;
     for (i=0;i<n;i++) {
       for (j=0;j<n;j++) {
@@ -60,7 +60,7 @@ int jacobi(){
     for (i=0; i<n; i++) {
       buf[i] = (b[i] - sum) / (a[i][i]);   //give us our x values
       x[i] = buf[i];
-      printf("x[%d]: %f\n", i, x[i]);
+      //printf("x[%d]: %f\n", i, x[i]);
     }
 
     k++;
@@ -71,7 +71,7 @@ int jacobi(){
 }
 
 // returns 1 if converged else 0
-int convergence(int iter){
+int convergence(){
   int i,j,k=0,flag=1;
   float sum=0;
   // ...
@@ -84,15 +84,18 @@ int convergence(int iter){
 	k++;
     }
 
-    printf("Sum: %f\n", sum);
+    //printf("Sum: %f\n", sum);
     tmp[i]=sum;
     sum=0;
     k=0;
   }
   
   for (k=0; k<n; k++) {
-    if ( (tmp[k] - b[k]) > error )
+    printf("tmp[%d]: %f   b[%d]: %f\n", k, tmp[k], k, b[k]);
+    if ( (tmp[k] - b[k]) >= error ) {
+      printf("Error: %f\n", tmp[k]-b[k]);
       return 0;
+    }
   }
 
   //if ( (tmp[k] - error) > b[k] )
